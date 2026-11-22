@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngelIA — Intelligence artificielle</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #07111f;
+            color: #edf5ff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* BARRE LATERALE */
+
+        .sidebar {
+            width: 260px;
+            background: #0a1729;
+            border-right: 1px solid #17304c;
+            padding: 25px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #55baff;
+            margin-bottom: 35px;
+            text-shadow: 0 0 15px #168cff;
+        }
+
+        .new-chat {
+            background: linear-gradient(135deg, #147fe5, #35baff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .nav-title {
+            color: #718aa8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .nav-item {
+            padding: 13px;
+            border-radius: 10px;
+            color: #a9bed7;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .nav-item.active {
+            background: #122b49;
+            color: #5dbaff;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            color: #718aa8;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* CONTENU PRINCIPAL */
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        header {
+            height: 75px;
+            border-bottom: 1px solid #17304c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        header h2 {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .status {
+            color: #51dca3;
+            font-size: 12px;
+        }
+
+        .chat {
+            flex: 1;
+            overflow-y: auto;
+            padding: 35px 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin: 55px auto 40px;
+            max-width: 600px;
+        }
+
+        .orb {
+            width: 100px;
+            height: 100px;
+            margin: auto auto 25px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #8be4ff, #168cff 45%, #092d69 75%);
+            box-shadow: 0 0 35px #168cff, 0 0 80px #0864ca55;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .welcome h1 span {
+            color: #55baff;
+        }
+
+        .welcome p {
+            color: #8ba4c1;
+            line-height: 1.6;
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            max-width: 650px;
+            margin: 30px auto;
+        }
+
+        .suggestion {
+            background: #0d2037;
+            border: 1px solid #1b3b5e;
+            border-radius: 12px;
+            padding: 18px;
+            color: #c4dcf5;
+            cursor: pointer;
+            text-align: left;
+            transition: .2s;
+        }
+
+        .suggestion:hover {
+            border-color: #42aaff;
+            background: #122c4b;
+        }
+
+        .messages {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .message {
+            padding: 16px 20px;
+            margin: 15px 0;
+            border-radius: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .user {
+            background: #123b65;
+            margin-left: 15%;
+        }
+
+        .angelia {
+            background: #10243b;
+            border: 1px solid #1c3b5c;
+            margin-right: 15%;
+        }
+
+        /* ZONE DE SAISIE */
+
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #17304c;
+        }
+
+        .input-box {
+            max-width: 800px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            background: #0d2037;
+            border: 1px solid #285078;
+            border-radius: 15px;
+            padding: 8px 10px 8px 18px;
+        }
+
+        .input-box textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 12px 0;
+            max-height: 120px;
+        }
+
+        .input-box textarea::placeholder {
+            color: #718aa8;
+        }
+
+        .send {
+            width: 43px;
+            height: 43px;
+            border: none;
+            border-radius: 12px;
+            background: #168cff;
+            color: white;
+            cursor: pointer;
+            font-size: 19px;
+        }
+
+        .send:hover {
+            background: #42aaff;
+        }
+
+        .notice {
+            text-align: center;
+            color: #617b99;
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                display: none;
+            }
+
+            header {
+                padding: 0 18px;
+            }
+
+            .welcome {
+                margin-top: 35px;
+            }
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+
+            .suggestions {
+                grid-template-columns: 1fr;
+            }
+
+            .user {
+                margin-left: 5%;
+            }
+
+            .angelia {
+                margin-right: 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="logo">✦ AngelIA</div>
+
+        <button class="new-chat" onclick="newChat()">
+            + Nouvelle discussion
+        </button>
+
+        <div class="nav-title">Menu</div>
+        <div class="nav-item active">◈ Discussions</div>
+        <div class="nav-item">◉ Mémoire</div>
+        <div class="nav-item">⚙ Paramètres</div>
+
+        <div class="sidebar-footer">
+            AngelIA<br>
+            Créée de zéro avec passion 💙
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header>
+            <h2>Nouvelle discussion</h2>
+            <div class="status">● Interface en ligne</div>
+        </header>
+
+        <section class="chat" id="chat">
+
+            <div class="welcome" id="welcome">
+                <div class="orb"></div>
+
+                <h1>Bonjour, je suis <span>AngelIA</span></h1>
+
+                <p>
+                    Ton intelligence artificielle indépendante.<br>
+                    Que pouvons-nous découvrir ensemble aujourd'hui ?
+                </p>
+
+                <div class="suggestions">
+                    <button class="suggestion"
+                        onclick="suggest('Présente-toi !')">
+                        ✦ Présente-toi !
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="suggest('Pourquoi le ciel est bleu ?')">
+                        ◈ Pourquoi le ciel est bleu ?
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="suggest('Raconte-moi quelque chose.')">
+                        ✧ Raconte-moi quelque chose
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="suggest('Quels sont tes projets ?')">
+                        ⌘ Quels sont tes projets ?
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages" id="messages"></div>
+
+        </section>
+
+        <div class="input-area">
+            <div class="input-box">
+                <textarea
+                    id="message"
+                    placeholder="Écris un message à AngelIA..."
+                    rows="1"
+                    onkeydown="handleKey(event)"
+                ></textarea>
+
+                <button class="send" onclick="sendMessage()">
+                    ↑
+                </button>
+            </div>
+
+            <div class="notice">
+                AngelIA est un projet indépendant en développement.
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("message");
+    const welcome = document.getElementById("welcome");
+
+    function addMessage(text, author) {
+        const div = document.createElement("div");
+        div.className = "message " + author;
+        div.textContent = text;
+        messages.appendChild(div);
+
+        document.getElementById("chat").scrollTop =
+            document.getElementById("chat").scrollHeight;
+    }
+
+    function sendMessage() {
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        welcome.style.display = "none";
+
+        addMessage(text, "user");
+
+        addMessage(
+            "L'interface publique d'AngelIA est prête à être développée ! " +
+            "Son cerveau Python sera connecté dans une prochaine étape. 💙",
+            "angelia"
+        );
+
+        input.value = "";
+        input.style.height = "auto";
+    }
+
+    function suggest(text) {
+        input.value = text;
+        sendMessage();
+    }
+
+    function handleKey(event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    }
+
+    function newChat() {
+        messages.innerHTML = "";
+        welcome.style.display = "block";
+        input.value = "";
+    }
+
+    input.addEventListener("input", function() {
+        input.style.height = "auto";
+        input.style.height = input.scrollHeight + "px";
+    });
+</script>
+
+</body>
+</html>
